@@ -8,43 +8,43 @@ import formatNewEvent, { getNewEvents } from '../../utils/eventUtils.js';
 import './calendar.scss';
 
 const Calendar = ({ weekDates, modalState, modalStateHandler }) => {
-	const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState([]);
 
-	useEffect(() => {
-		getNewEvents(setEvents);
-	}, []);
+  useEffect(() => {
+    getNewEvents(setEvents);
+  }, []);
 
-	const createEvent = (e, eventData) => {
-		e.preventDefault();
-		postEvent(formatNewEvent(eventData)).then(() => getNewEvents(setEvents));
-		modalStateHandler();
-	};
+  const createEvent = (e, eventData) => {
+    e.preventDefault();
+    postEvent(formatNewEvent(eventData)).then(() => getNewEvents(setEvents));
+    modalStateHandler();
+  };
 
-	const deleteEvent = (id, dateFrom) => {
-		if (!deleteValidation(dateFrom)) {
-			fetchDelete(id).then(() => getNewEvents(setEvents));
-		}
-	};
+  const deleteEvent = (id, dateFrom) => {
+    if (!deleteValidation(dateFrom)) {
+      fetchDelete(id).then(() => getNewEvents(setEvents));
+    }
+  };
 
-	return (
-		<section className='calendar'>
-			<CalendarHeader weekDates={weekDates} />
-			<CalendarBody
-				weekDates={weekDates}
-				events={events}
-				deleteEvent={deleteEvent}
-				modalStateHandler={modalStateHandler}
-				modalState={modalState}
-				createEventHandler={createEvent}
-			/>
-		</section>
-	);
+  return (
+    <section className="calendar">
+      <CalendarHeader weekDates={weekDates} />
+      <CalendarBody
+        weekDates={weekDates}
+        events={events}
+        deleteEvent={deleteEvent}
+        modalStateHandler={modalStateHandler}
+        modalState={modalState}
+        createEventHandler={createEvent}
+      />
+    </section>
+  );
 };
 
 export default Calendar;
 
 Calendar.propTypes = {
-	weekDates: PropTypes.array.isRequired,
-	modalState: PropTypes.bool.isRequired,
-	modalStateHandler: PropTypes.func.isRequired,
+  weekDates: PropTypes.array.isRequired,
+  modalState: PropTypes.bool.isRequired,
+  modalStateHandler: PropTypes.func.isRequired,
 };

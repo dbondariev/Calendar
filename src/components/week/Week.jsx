@@ -1,31 +1,58 @@
-import React from 'react';
-import Day from '../day/Day';
-
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import Modal from '../modal/Modal.jsx';
+import { slotData } from '../../utils/dateUtils.js';
+import WeekColumns from './WeekColumns.jsx';
 import './week.scss';
 
-const Week = ({ weekDates, events }) => {
+const Week = ({
+  weekDates,
+  events,
+  deleteEvent,
+  modalStateHandler,
+  modalState,
+  createEventHandler,
+}) => {
+  const [timeSlotDate, setTimeSlotDate] = useState(null);
+
+  const timeSlotHandler = event => {
+    if (!event.target.classList.contains('calendar__time-slot')) {
+      return;
+    }
+    setTimeSlotDate(slotData(event));
+    modalStateHandler();
+  };
+
+  useEffect(() => {
+    setTimeSlotDate(null);
+  }, [timeSlotDate]);
+
   return (
-    <div className="calendar__week">
-      {weekDates.map((dayStart) => {
-        const dayEnd = new Date(dayStart.getTime()).setHours(
-          dayStart.getHours() + 24
-        );
-
-        //getting all events from the day we will render
-        const dayEvents = events.filter(
-          (event) => event.dateFrom > dayStart && event.dateTo < dayEnd
-        );
-
-        return (
-          <Day
-            key={dayStart.getDate()}
-            dataDay={dayStart.getDate()}
-            dayEvents={dayEvents}
-          />
-        );
-      })}
-    </div>
+    <>
+      {modalState && (
+        <Modal
+          modalStateHandler={modalStateHandler}
+          createEventHandler={createEventHandler}
+          timeSlotDate={timeSlotDate}
+        />
+      )}
+      <WeekColumns
+        weekDates={weekDates}
+        timeSlotHandler={timeSlotHandler}
+        events={events}
+        deleteEvent={deleteEvent}
+      />
+    </>
   );
 };
 
 export default Week;
+
+Week.propTypes = {
+  weekDates: PropTypes.array.isRequired,
+  events: PropTypes.array.isRequired,
+  deleteEvent: PropTypes.func.isRequired,
+  modalStateHandler: PropTypes.func.isRequired,
+  modalState: PropTypes.bool.isRequired,
+  createEventHandler: PropTypes.func.isRequired,
+};

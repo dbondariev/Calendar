@@ -6,6 +6,11 @@
   cursor: pointer;
   font-size: 16px;
   font-weight: 500;
+  
+  &:focus {
+    background-color: cornflowerblue;
+    color: #fff;
+  }
 }
 
 .icon-button {

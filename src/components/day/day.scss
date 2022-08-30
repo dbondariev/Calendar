@@ -1,0 +1,27 @@
+.ball {
+  position: absolute;
+  background-color: red;
+  width: 10px;
+  height: 10px;
+  margin-top: -5px;
+  margin-left: -5px;
+  border-radius: 50%;
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 60px);
+
+  &__day {
+    position: relative;
+    flex: 1;
+    border-left: 1px solid #eee;
+  }
+  
+  &__time-slot {
+    height: 60px;
+    position: relative;
+    border-bottom: 1px solid #eee;
+  }
+}
